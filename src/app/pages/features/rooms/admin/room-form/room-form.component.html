@@ -1,0 +1,84 @@
+<div class="room-form-wrapper">
+  <div class="room-form-container">
+    <div class="room-form-header">
+      <h1 class="room-form-brand">Room Manager</h1>
+    </div>
+
+    <div class="room-form-content">
+      <div class="form-container">
+        <div class="form-header">
+          <h2 class="form-title">{{ isEditMode ? 'Edit Room' : 'Add New Room' }}</h2>
+          <p class="form-subtitle">{{ isEditMode ? 'Update room details' : 'Enter new room information' }}</p>
+        </div>
+
+        <form [formGroup]="roomForm" (ngSubmit)="onSubmit()" class="auth-form">
+          <div class="input-group">
+            <label class="input-label">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+                <path d="M8 4v4m8-4v4M3 10h18"></path>
+              </svg>
+              <input type="text" class="auth-input" formControlName="name" placeholder="Enter room name">
+            </label>
+            <div *ngIf="roomForm.get('name')?.invalid && roomForm.get('name')?.touched" class="validation-error">
+              Room name is required
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <input type="text" class="auth-input" formControlName="building" placeholder="Enter building">
+            </label>
+            <div *ngIf="roomForm.get('building')?.invalid && roomForm.get('building')?.touched" class="validation-error">
+              Building is required
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <input type="text" class="auth-input" formControlName="floor" placeholder="Enter floor (e.g., '1', '2B', 'Ground')">
+            </label>
+            <div *ngIf="roomForm.get('floor')?.invalid && roomForm.get('floor')?.touched" class="validation-error">
+              Floor is required
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label class="input-label">
+              <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 8v4l3 3"></path>
+              </svg>
+              <select class="auth-input" formControlName="status">
+                <option value="" disabled selected>Select status</option>
+                <option value="Available">Available</option>
+                <option value="Occupied">Occupied</option>
+                <option value="Maintenance">Maintenance</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="auth-button secondary" (click)="onCancel()">
+              <span>Cancel</span>
+            </button>
+            <button type="submit" class="auth-button" [disabled]="roomForm.invalid">
+              <span>{{ isEditMode ? 'Update Room' : 'Add Room' }}</span>
+              <svg class="arrow-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M5 12h14M12 5l7 7-7 7"></path>
+              </svg>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

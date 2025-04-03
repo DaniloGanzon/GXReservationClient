@@ -1,0 +1,230 @@
+/* Room Form Styles - Matching Login Component */
+.room-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding-top: 5rem;
+  background: none;
+}
+
+.room-form-container {
+  width: 100%;
+  max-width: 500px;
+  font-family: 'Poppins', sans-serif;
+  background: rgba(33, 37, 41, 0.85);
+  border-radius: 24px;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+  overflow: hidden;
+}
+
+.room-form-header {
+  padding: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.room-form-brand {
+  font-family: 'Poppins', sans-serif;
+  font-size: 2rem;
+  background: linear-gradient(90deg, #93c5fd 0%, #a5b4fc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+  text-align: center;
+}
+
+.room-form-content {
+  padding: 2rem;
+}
+
+.form-container {
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  padding: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.form-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.form-title {
+  color: #f8f9fa;
+  font-size: 1.75rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+}
+
+.form-subtitle {
+  color: #adb5bd;
+  margin: 0;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  position: relative;
+}
+
+.input-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+}
+
+.input-icon {
+  width: 24px;
+  height: 24px;
+  stroke: #adb5bd;
+  flex-shrink: 0;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #f8f9fa;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.3s;
+}
+
+.auth-input:focus {
+  outline: none;
+  border-color: rgba(147, 197, 253, 0.5);
+  box-shadow: 0 0 0 3px rgba(147, 197, 253, 0.1);
+}
+
+select.auth-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23adb5bd' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 1rem;
+}
+
+select.auth-input option {
+  background: #1e293b; /* Dark background for options */
+  color: #f8f9fa; /* Light text color */
+}
+
+
+select.auth-input:focus {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+}
+
+select.auth-input option:checked {
+  background: #3b82f6; /* Blue background for selected option */
+  color: white;
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.auth-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.auth-button.secondary {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #f8f9fa;
+}
+
+.auth-button.secondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.auth-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.auth-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.arrow-icon {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2.5px;
+}
+
+.validation-error {
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  padding-left: 2rem;
+}
+
+/* Animation for invalid form fields */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.auth-input.ng-invalid.ng-touched {
+  border-color: #ef4444;
+  animation: shake 0.4s ease-in-out;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .room-form-container {
+    border-radius: 16px;
+  }
+  
+  .room-form-header,
+  .room-form-content {
+    padding: 1.5rem;
+  }
+  
+  .form-container {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .room-form-wrapper {
+    padding: 1rem;
+  }
+  
+  .room-form-brand {
+    font-size: 1.5rem;
+  }
+  
+  .form-title {
+    font-size: 1.5rem;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+}

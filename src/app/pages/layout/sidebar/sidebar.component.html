@@ -1,0 +1,56 @@
+<nav [class.collapsed]="isCollapsed" class="sidebar">
+    <div class="sidebar-header">
+      <img src="/GXlogo.png" alt="Company Logo" class="logo" />
+      <span class="company-name">GX INTERNATIONAL</span>
+      <button class="toggle-btn" (click)="toggle()">
+        <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+      </button>
+    </div>
+  
+    <div class="sidebar-content">
+  
+      <!-- Calendar Section (Admin Only) -->
+      <div class="sidebar-section" *ngIf="isAdmin">
+        <div class="sidebar-section-title" 
+             routerLink="/admin/dashboard"
+             (click)="setActiveRoute('dashboard')"
+             [class.active]="activeRoute === 'dashboard'">
+          <mat-icon>calendar_today</mat-icon>
+          <span>Calendar</span>
+        </div>
+      </div>
+  
+      <!-- Rooms Section -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" 
+             [routerLink]="isAdmin ? '/admin/rooms' : '/rooms'" 
+             (click)="setActiveRoute('rooms')"
+             [class.active]="activeRoute === 'rooms'">
+          <mat-icon>meeting_room</mat-icon>
+          <span>Rooms</span>
+        </div>
+      </div>
+  
+      <!-- Reservations Section -->
+      <div class="sidebar-section">
+        <div class="sidebar-section-title" 
+             [routerLink]="isAdmin ? '/admin/reservations' : '/reservations'" 
+             (click)="setActiveRoute('reservations')"
+             [class.active]="activeRoute === 'reservations'">
+          <mat-icon>list_alt</mat-icon>
+          <span>Reservations</span>
+        </div>
+      </div>
+    </div>
+  
+    <div class="sidebar-footer">
+        <button mat-button (click)="onLogout()" *ngIf="isAuthenticated">
+            <mat-icon>logout</mat-icon>
+            <span *ngIf="!isCollapsed">Logout</span>
+          </button>
+      <button class="login-btn" *ngIf="!isAuthenticated" routerLink="/signin">
+        <mat-icon>login</mat-icon>
+        <span>Login</span>
+      </button>
+    </div>
+</nav>

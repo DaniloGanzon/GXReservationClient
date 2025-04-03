@@ -1,0 +1,119 @@
+<div class="room-list-wrapper">
+    <div class="room-list-container">
+      <!-- Title Section -->
+      <div class="calendar-header">
+        <h1 class="calendar-title">Reserve Meeting <span class="highlight">Room</span> Now!</h1>
+        <div class="header-right">
+          <div class="search-section">
+            <div class="search-box">
+              <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input type="text" [(ngModel)]="searchTerm" 
+                    (input)="onSearchChange()" 
+                    placeholder="Search rooms...">
+            </div>
+          </div>
+          <div class="add-room-section">
+            <button class="add-reservation-button" (click)="navigateToRoomForm()">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              Add New Room
+            </button>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Loading Indicator -->
+      <div *ngIf="isLoading" class="loading-indicator">
+        <div class="spinner"></div>
+        <p>Loading rooms...</p>
+      </div>
+  
+      <!-- Room Cards -->
+      <div *ngIf="!isLoading" class="room-cards-container">
+        <div *ngFor="let room of filteredRooms" class="room-card">
+          <div class="card-header">
+            <h3>{{ room.name }}</h3>
+            <div class="room-status" [attr.data-status]="room.reservationCount === 0 ? 'Available' : 'Booked'">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+              <span>{{ room.reservationCount === 0 ? 'Available' : 'Booked' }}</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="room-detail">
+              <svg class="detail-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>{{ room.building }}</span>
+            </div>
+            <div class="room-detail">
+              <svg class="detail-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <span>Floor {{ room.floor }}</span>
+            </div>
+            <div class="reservation-count">
+              <svg class="clock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ room.reservationCount === 0 ? 'No reservations' : room.reservationCount + ' reservations' }}
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="action-buttons">
+              <button class="action-button edit-button" (click)="editRoom(room); $event.stopPropagation()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+              </button>
+              <button class="action-button delete-button" (click)="deleteRoom(room); $event.stopPropagation()">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M3 6h18"></path>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+              </button>
+              <button class="action-button calendar-button" (click)="navigateToCalendar(room.id)">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+  
+        <div *ngIf="filteredRooms.length === 0" class="no-rooms-message">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+            <line x1="12" y1="9" x2="12" y2="13"></line>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <h3>No rooms available</h3>
+          <p>Try adjusting your search criteria</p>
+        </div>
+      </div>
+      <!-- Confirmation Dialog -->
+      <app-confirmation-dialog 
+      *ngIf="showDeleteDialog"
+      title="Delete Room"
+      message="Are you sure you want to delete this room? This action cannot be undone."
+      type="delete"
+      theme="danger"
+      confirmText="Delete"
+      (confirmed)="onDeleteConfirmed()"
+      (cancelled)="onDialogCancel()">
+      </app-confirmation-dialog>
+    </div>
+  </div>

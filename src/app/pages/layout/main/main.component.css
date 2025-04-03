@@ -1,0 +1,34 @@
+.main-background {
+  position: fixed;
+  width: 100%;
+  min-height: 100vh;
+  overflow: auto; /* Changed from hidden */
+  padding-bottom: 3rem; /* Add bottom padding */
+}
+
+.background-image {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+.content-overlay {
+  position: relative; /* Changed back to relative */
+  z-index: 2;
+  min-height: calc(100vh - 3rem); /* Account for footer space */
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  display: block; /* Changed from flex */
+}
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1600px; /* Matching room-list container */
+  margin: 0 auto;
+  min-height: calc(100vh - 7rem); /* Account for padding and footer space */
+  padding-bottom: 2rem; /* Additional bottom padding */
+}

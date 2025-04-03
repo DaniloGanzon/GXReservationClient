@@ -1,0 +1,45 @@
+<div class="dialog-overlay">
+    <div class="dialog-container">
+      <!-- Background overlay -->
+      <div class="dialog-backdrop" aria-hidden="true"></div>
+  
+      <!-- Modal container -->
+      <div class="dialog-modal">
+        <div class="dialog-content">
+          <div class="dialog-header">
+            <!-- Icon -->
+            <div class="dialog-icon" [class]="themeClasses">
+              <svg class="dialog-icon-svg" viewBox="0 0 24 24">
+                <path [attr.d]="iconPath" />
+              </svg>
+            </div>
+            
+            <!-- Content -->
+            <div class="dialog-text">
+              <h3 class="dialog-title">
+                {{title}}
+              </h3>
+              <p class="dialog-message">
+                {{message}}
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="dialog-actions">
+          <button type="button" 
+                  class="dialog-button dialog-cancel"
+                  (click)="onCancel()">
+            {{cancelText}}
+          </button>
+          <button type="button" 
+                  class="dialog-button dialog-confirm"
+                  [class]="buttonClasses"
+                  (click)="onConfirm()">
+            {{confirmText}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

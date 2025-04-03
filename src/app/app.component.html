@@ -1,0 +1,8 @@
+<app-sidebar (toggleSidebar)="onSidebarToggle($event)"></app-sidebar>
+<app-main>
+  <div class="main-content-wrapper" [class.collapsed]="isSidebarCollapsed">
+    <div class="content-container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</app-main>

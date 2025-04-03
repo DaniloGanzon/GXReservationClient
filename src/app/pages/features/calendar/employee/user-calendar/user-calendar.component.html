@@ -1,0 +1,166 @@
+<div class="calendar-wrapper">
+  <div class="calendar-container">
+    <!-- Header -->
+    <div class="calendar-header">
+      <h1 class="calendar-title">{{ getCalendarTitle() }}</h1>
+      <div class="header-right">
+        <div class="room-info">
+          <svg class="room-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span>{{room?.name}}</span>
+        </div>
+        <div class="floor-info">
+          <svg class="floor-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          </svg>
+          <span>Floor {{room?.floor}}</span>
+        </div>
+        <div class="room-status" [attr.data-status]="room?.status || 'Available'">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+          </svg>
+          <span>Status: {{room?.status || 'Available'}}</span>
+        </div>
+        <div class="room-selector">
+          <select (change)="onRoomChange($event)" class="room-dropdown">
+            <option value="" disabled selected>Select a room</option>
+            <option *ngFor="let room of rooms" [value]="room.id" [selected]="room.id === roomId">
+              {{room.name}} (Floor {{room.floor}})
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Calendar Layout -->
+    <div class="calendar-layout">
+      <!-- Left Side - Calendar -->
+      <div class="calendar-side">
+        <div class="calendar-nav">
+          <button class="nav-button prev" (click)="previousMonth()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <h2 class="month-year">{{ getMonthName() }}</h2>
+          <button class="nav-button next" (click)="nextMonth()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+        </div>
+
+        <div class="calendar-grid">
+          <div class="day-names">
+            <div class="day-name" *ngFor="let day of [0,1,2,3,4,5,6]">{{ getDayName(day) }}</div>
+          </div>
+
+          <div class="week" *ngFor="let week of weeks">
+            <div 
+              class="day" 
+              [class.empty]="day.date === null"
+              [class.today]="isToday(day.date)"
+              [class.reserved]="day.isReserved"
+              [class.selected]="isSelected(day.date)"
+              *ngFor="let day of week"
+              (click)="selectDay(day)"
+            >
+              <span class="date-number" *ngIf="day.date !== null">{{ day.date }}</span>
+              <span class="reserved-badge" *ngIf="day.isReserved && day.date !== null">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                </svg>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Dynamic Content -->
+      <div class="details-side">
+        <!-- Reservation Form View -->
+        <app-calendar-reservation-form 
+          *ngIf="showReservationForm"
+          [room]="room"
+          [minDate]="minDate"
+          (formSubmit)="handleReservationSubmit($event)"
+          (cancel)="showReservationForm = false">
+        </app-calendar-reservation-form>
+
+        <!-- Day Details View -->
+          <div *ngIf="!showReservationForm">
+            <div class="day-details-view" *ngIf="selectedDay; else selectPrompt">
+              <div class="day-header">
+                <h2>{{ formatSelectedDate() }}</h2>
+                <div class="day-actions">
+                  <button class="today-button" (click)="goToToday()">Today</button>
+                </div>
+              </div>
+
+              <div *ngIf="selectedDayReservations.length > 0; else noReservations" class="reservations-list">
+                <div class="reservation-card" *ngFor="let reservation of selectedDayReservations">
+                  <div class="reservation-header">
+                    <h3>Room Booked</h3>
+                    <span class="reservation-status" [class.status-approved]="reservation.status === 'Approved'" 
+                          [class.status-pending]="reservation.status === 'Pending'" 
+                          [class.status-denied]="reservation.status === 'Denied'">
+                      {{ reservation.status || 'Approved' }}
+                    </span>
+                  </div>
+                  <div class="reservation-time">
+                    {{ reservation.timeStart | timeFormat }} - {{ getEndTime(reservation.timeStart, reservation.timeDuration) | timeFormat }}
+                  </div>
+                </div>
+              </div>
+
+              <ng-template #noReservations>
+                <div class="no-reservations">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                    <line x1="10" y1="14" x2="14" y2="14"></line>
+                    <line x1="12" y1="12" x2="12" y2="16"></line>
+                  </svg>
+                  <h3>No Reservations</h3>
+                  <p>This day has no scheduled bookings</p>
+                </div>
+              </ng-template>
+            </div>
+
+            <ng-template #selectPrompt>
+              <div class="select-day-prompt">
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                  <line x1="16" y1="2" x2="16" y2="6"></line>
+                  <line x1="8" y1="2" x2="8" y2="6"></line>
+                  <line x1="3" y1="10" x2="21" y2="10"></line>
+                  <line x1="10" y1="14" x2="14" y2="14"></line>
+                  <line x1="12" y1="12" x2="12" y2="16"></line>
+                </svg>
+                <h3>Select a Date</h3>
+                <p>Click on any date to view bookings</p>
+              </div>
+            </ng-template>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Add Reservation Button -->
+    <div class="add-reservation-container">
+      <button class="add-reservation-button" (click)="showAddReservationForm()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Add Reservation
+      </button>
+    </div>
+  </div>
+</div>

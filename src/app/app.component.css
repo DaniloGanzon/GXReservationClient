@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0f172a; /* Optional: fallback background */
+}
+
+.main-content-wrapper {
+  margin-left: 250px;
+  width: calc(100% - 250px);
+  transition: all 0.3s ease;
+  min-height: 100vh;
+  padding-bottom: 3rem; /* Add bottom padding */
+}
+
+.main-content-wrapper.collapsed {
+  margin-left: 60px;
+  width: calc(100% - 60px);
+}
+
+.content-container {
+  width: 100%;
+  height: 100%;
+  display: block; /* Changed from flex to block */
+  padding: 2rem;
+  box-sizing: border-box;
+  min-height: calc(100vh - 3rem); /* Account for footer space */
+}
+
+@media (max-width: 768px) {
+  .main-content-wrapper {
+    margin-left: 60px;
+    width: calc(100% - 60px);
+  }
+  
+  .main-content-wrapper.collapsed {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .content-container {
+    padding: 1rem;
+  }
+}
