@@ -39,17 +39,11 @@
           },
           "configurations": {
             "production": {
-              "optimization": true,
-              "aot": true,
-              "buildOptimizer": true,
-              "vendorChunk": false,
-              "extractLicenses": true,
-              "outputHashing": "all",
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "10MB",
-                  "maximumError": "15MB"
+                  "maximumWarning": "2MB",
+                  "maximumError": "3MB"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -101,12 +95,7 @@
               "@angular/material/prebuilt-themes/azure-blue.css",
               "src/styles.css"
             ],
-            "scripts": [
-              {
-                "postinstall": "npm run build-lite",
-                "build-lite": "ng build --configuration=development && ng build --configuration=production"
-              }
-            ]
+            "scripts": []
           }
         }
       }
