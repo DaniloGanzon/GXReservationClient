@@ -1,7 +1,7 @@
 [build]
     base = "GxReservationClient"
     command = "npm run build"
-    publish: "dist/gxreservation-client"
+    publish = "dist/gxreservation-client"
 
     [[redirects]]
     from = "/*"
